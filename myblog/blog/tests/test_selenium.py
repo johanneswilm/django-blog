@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 
 class SeleniumTest(StaticLiveServerTestCase):
@@ -38,16 +38,19 @@ class SeleniumTest(StaticLiveServerTestCase):
         )
         login_button.click()
         add_blog_button = WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located(
+            ec.presence_of_element_located(
                 (
                     By.CSS_SELECTOR,
-                    "#content-main > div.app-blog.module > table > tbody > tr > td:nth-child(2) > a",
+                    (
+                        "#content-main > div.app-blog.module > "
+                        "table > tbody > tr > td:nth-child(2) > a"
+                    ),
                 )
             )
         )
         add_blog_button.click()
         WebDriverWait(self.driver, 10).until(
-            EC.presence_of_element_located((By.ID, "id_title"))
+            ec.presence_of_element_located((By.ID, "id_title"))
         )
         title_fields = self.driver.find_elements_by_css_selector("#id_title")
         self.assertEqual(len(title_fields), 1)
